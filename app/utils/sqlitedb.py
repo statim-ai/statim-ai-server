@@ -38,6 +38,7 @@ class SQLiteDB:
 
     def _execute(self, body):
         conn = sqlite3.connect(self.file, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         
         result = body(cursor, conn)

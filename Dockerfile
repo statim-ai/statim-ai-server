@@ -1,34 +1,30 @@
-# Use the official Python image from Docker Hub
 FROM python:3.12-slim
 
-RUN useradd -ms /bin/bash myuser
-USER myuser
-WORKDIR /home/myuser
-ENV PATH="/home/myuser/.local/bin:${PATH}"
+RUN apt-get update && apt-get upgrade -y && apt-get install -y python3-poetry
+
+RUN useradd -ms /bin/bash statim
+USER statim
+WORKDIR /home/statim
+ENV PATH="/home/statim/.local/bin:${PATH}"
 
 # Upgrade pip
 RUN pip install --upgrade pip
 
-### Models
+# Install app dependencies
+COPY poetry.lock pyproject.toml ./
+RUN poetry install --no-root --only main
 
 # Install model dependencies
-COPY --chown=myuser:myuser requirements_models.txt requirements_models.txt
-RUN pip install --user --no-cache-dir -r requirements_models.txt
+RUN poetry install --no-root --only models
 
 # Download models
-COPY --chown=myuser:myuser app/download_models.py ./download_models/download_models.py
-COPY --chown=myuser:myuser app/handlers/*_create_model.py ./download_models/
-RUN python download_models/download_models.py
-
-### App
-
-# Install dependencies
-COPY --chown=myuser:myuser requirements.txt requirements.txt
-RUN pip install --user --no-cache-dir -r requirements.txt
+COPY --chown=statim:statim app/download_models.py ./download_models/download_models.py
+COPY --chown=statim:statim app/handlers/ ./download_models/
+RUN poetry run python download_models/download_models.py
 
 # Copy app
-COPY --chown=myuser:myuser . .
+COPY --chown=statim:statim . .
 
 EXPOSE 5000
 
-CMD ["python", "app/run.py"]
+CMD ["poetry", "run", "python", "app/run.py"]

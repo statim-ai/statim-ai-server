@@ -1,10 +1,23 @@
 import os
+from importlib import import_module
 
-files = os.listdir(f'{os.getcwd()}/download_models')
+MODELS_PATH = f'{os.getcwd()}/download_models'
+MODEL_MODULE = '{}.create_model'
 
-create_model_files = [file for file in files if file.endswith('_create_model.py')]
-create_model_files = map(lambda file: file.replace('.py', ''), create_model_files)
+# Get model directories
+directories = []
+for _, subdirs, _ in os.walk(MODELS_PATH):
+    for dir in subdirs:
+        directories.append(dir)
 
-modules = map(__import__, create_model_files)
-for module in modules:
-    module.create_model(local_files_only=False)
+
+# For each model directory
+model_modules_names = []
+for directory in directories:
+    model_modules_names.append(MODEL_MODULE.format(directory))
+
+
+# Load model modules
+model_modules = map(import_module, model_modules_names)
+for model_module in model_modules:
+    model_module.create_model(local_files_only=False)

@@ -2,54 +2,69 @@ from model.job import Job
 from utils.simple_logger import SimpleLogger
 from utils.sqlitedb import SQLiteDB
 
+JOBS_DB_FILE = 'jobs.db'
+
 class JobRepository:
 
     def __init__(self) -> None:
         self.logger = SimpleLogger()
-        self.sqlitedb = SQLiteDB('jobs.db')
-        self._create_table()
+        self.sqlitedb = SQLiteDB(JOBS_DB_FILE)
+        self.__create_table()
 
 
-    def _create_table(self):
-        self.logger.info('[JobRepository] _create_table')
+    def __create_table(self):
+        self.logger.debug('[JobRepository] __create_table')
 
         self.sqlitedb.execute_query('''CREATE TABLE IF NOT EXISTS jobs (
                                     id INTEGER PRIMARY KEY,
-                                    text TEXT,
+                                    prompt TEXT,
                                     status TEXT,
                                     model TEXT,
+                                    result TEXT,
+                                    result_type TEXT,
                                     timestamp TIMESTAMP)''')
 
     
     def create_job(self, job:Job):
-        self.logger.info('[JobRepository] create_job')
+        self.logger.debug('[JobRepository] create_job')
 
-        job.id = self.sqlitedb.execute_insert("INSERT INTO jobs (text, status, model, timestamp) VALUES (?, ?, ?, ?)", (job.text, job.status.serialize(), job.model, job.timestamp))
+        job.id = self.sqlitedb.execute_insert("INSERT INTO jobs (prompt, status, model, timestamp) VALUES (?, ?, ?, ?)", (job.prompt, job.status.serialize(), job.model, job.timestamp))
         return job
 
 
     def update_job(self, job:Job):
-        self.logger.info('[JobRepository] update_job')
+        self.logger.debug('[JobRepository] update_job')
         
-        job.id = self.sqlitedb.execute_update("UPDATE jobs SET status = ? WHERE id = ?", (job.status.serialize(), job.id))
+        job.id = self.sqlitedb.execute_update("UPDATE jobs SET status = ?, result = ?, result_type = ? WHERE id = ?", (job.status.serialize(), job.result, job.result_type.serialize(), job.id))
         return job
 
     
     def get_by_id(self, id:int):
-        self.logger.info('[JobRepository] get_by_id')
+        self.logger.debug('[JobRepository] get_by_id')
 
-        rows = self.sqlitedb.execute_select("SELECT text, status, model, id, timestamp FROM jobs WHERE id=?", (id,))
+        rows = self.sqlitedb.execute_select("SELECT prompt, status, model, result, result_type, id, timestamp FROM jobs WHERE id=?", (id,))
 
         if len(rows) == 1:
-            row = rows[0]
-            return Job(text=row[0], status=row[1], model=row[2], id=row[3], timestamp=row[4])
+            return self.map_row_to_job(rows[0])
         else:
             return None
 
     
     def get_all(self):
-        self.logger.info('[JobRepository] get_all')
+        self.logger.debug('[JobRepository] get_all')
 
-        rows = self.sqlitedb.execute_select("SELECT text, status, model, id, timestamp FROM jobs")
+        rows = self.sqlitedb.execute_select("SELECT prompt, status, model, result, result_type, id, timestamp FROM jobs")
 
-        return [Job(text=row[0], status=row[1], model=row[2], id=row[3], timestamp=row[4]) for row in rows]
+        return [self.map_row_to_job(row) for row in rows]
+    
+
+    @staticmethod
+    def map_row_to_job(row):
+        return Job(
+            prompt=row['prompt'],
+            status=row['status'],
+            model=row['model'],
+            result=row['result'],
+            result_type=row['result_type'],
+            id=row['id'],
+            timestamp=row['timestamp'])
