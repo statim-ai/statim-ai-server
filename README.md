@@ -29,13 +29,13 @@ This repository already have support for a couple of models out-of-box as exampl
 
 ## How to Run?
 
-1. Create the docker image run:
+1. Create the docker image:
 ```sh
 # This will crate new docker image: statim-ai-server
 make build
 ```
 
-2. Run the generate docker image:
+2. Run the docker image:
 ```sh
 # This will run the statim-ai-server docker image
 make run
@@ -86,6 +86,7 @@ A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
 - Add swagger
+- Add arch image to README
 - Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager?
 - Save images on the database in base64
 - Add REST requests to /docs
