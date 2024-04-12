@@ -20,5 +20,5 @@ class BaseJobHandler(ABC):
 
 
     @abstractmethod
-    def execute(self):
+    def execute(self) -> str:
         pass

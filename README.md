@@ -85,25 +85,26 @@ Before using this server in a specific enviroment make sure that the use case is
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
+- Add start processing date
+- Add end processing date
 - Add swagger
+- Add API to access images directly?
+- Send images on job endpoint?
+- Add limit and offset to job entpoint
+- Save sqlite file locally to keep state
+- Add input validation
 - Add arch image to README
-- Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager?
-- Save images on the database in base64
 - Add REST requests to /docs
-- improve the model download to avoid copying extra files (this avoids extra model downloads when no other file changes are made)
+- Improve the model download to avoid copying extra files (this avoids extra model downloads when no other file changes are made)
 - Create .env file
 - Make uniform use of Model ID name
-- License file
-- add start processing date
-- add end processing date
 - Tests
-- docker-compose
+- Add docker-compose support
 - Version file
-- input validation
-- Init vs start
-- add multi-stage support
+- Init vs start syntaxt
+- Add multi-stage support to Dockerfile?
 - Disable outgoing connections on the container
-- Use docker squash
+- Use docker squash?
 - Generate docker image with version from poetry
 
 ### DONE
@@ -121,3 +122,6 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Use poetry instead of requirements
 - Fix docker image name (my-python-app)
 - Test multimodel
+- License file
+- Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager?
+- Save images on the database in base64

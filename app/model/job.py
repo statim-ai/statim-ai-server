@@ -59,4 +59,4 @@ class Job:
         return json
     
     def __repr__(self):
-        return f"Job(id={self.id}, prompt='{self.prompt}', status='{self.status}', model='{self.model}', result='{self.result}', result_type='{self.result_type}' timestamp={self.timestamp})"
+        return f"Job(id={self.id}, prompt='{self.prompt}', status='{self.status}', model='{self.model}', result_type='{self.result_type}' timestamp={self.timestamp})"

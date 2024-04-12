@@ -7,7 +7,7 @@ class SimpleLogger:
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, **kwargs)
             cls._instance._logger = logging.getLogger()
-            cls._instance._logger.setLevel(logging.DEBUG)
+            cls._instance._logger.setLevel(logging.INFO)
             formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
             stream_handler = logging.StreamHandler()            
             stream_handler.setFormatter(formatter)

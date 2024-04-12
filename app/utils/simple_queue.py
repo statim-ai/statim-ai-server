@@ -14,20 +14,20 @@ class SimpleQueue:
 
     
     def is_empty(self):
-        self.logger.info('[SimpleQueue] is_empty')
+        self.logger.debug('[SimpleQueue] is_empty')
         return self.queue.empty()
 
     
     def enqueue(self, item):
-        self.logger.info('[SimpleQueue] enqueue')
+        self.logger.debug('[SimpleQueue] enqueue')
         self.queue.put(item)
 
     
     def dequeue(self):
-        self.logger.info('[SimpleQueue] waiting on dequeue')
+        self.logger.debug('[SimpleQueue] waiting on dequeue')
         return self.queue.get(block=True)
 
     
     def size(self):
-        self.logger.info('[SimpleQueue] size')
+        self.logger.debug('[SimpleQueue] size')
         return self.queue.qsize()

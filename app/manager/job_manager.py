@@ -36,8 +36,6 @@ class JobManager:
     
 
     def start(self) -> None:
-        self.logger.info('[JobManager] start')
-
         # Print registered Handlers
         for key in self.handlers.keys():
             self.logger.info(f'[JobManager] start - registered handler: {key}')
@@ -52,14 +50,18 @@ class JobManager:
                     handler = self.handlers[job.model]
 
                     # Execute job
-                    result = handler.execute(job)
+                    result = handler.execute(job)                    
 
-                    # TODO Convert response to correct type
+                    if type(result) != str:
+                        # Return type from model is not string
+                        self.logger.error(f'[JobManager] job_listener - text Model is not returning a string: {type(result)}')
+                        raise Exception(f'Text Model is not returning a string: {type(result)}')
+                    
                     job.result = result
                     job.result_type = handler.get_result_type()
                 else:
                     # No model handler found for model
-                    self.logger.info(f'[JobManager] job_listener - no handler found for model: {job.model}')
+                    self.logger.info(f'[JobManager] job_listener - no Handler found for Model: {job.model}')
                 
                 # Update database status
                 job.status = Status.PROCESSED
@@ -67,6 +69,8 @@ class JobManager:
 
         thread = Thread(target = job_listener, daemon=True)
         thread.start()
+
+        self.logger.info('[JobManager] start - Ready!')
 
 
     def add(self, job:Job) -> None:
