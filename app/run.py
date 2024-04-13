@@ -1,8 +1,9 @@
+"""Module that start the server."""
+
 import signal
 import sys
 
 from controllers import job_controller, model_controller
-from flasgger import Swagger
 from flask import Flask
 from manager.job_manager import JobManager
 from waitress import serve
@@ -44,6 +45,7 @@ swagger_template = {
 
 
 def main():
+    """Server entry point."""
     # Set the signal handler
     signal.signal(signal.SIGINT, signal_handler)
 
@@ -59,13 +61,14 @@ def main():
     app.register_blueprint(model_controller.model_blueprint)
 
     # Init swagger
-    swagger = Swagger(app, config=swagger_config, template=swagger_template)
+    # swagger = Swagger(app, config=swagger_config, template=swagger_template)
 
     # Init waitress server
     serve(app, host="0.0.0.0", port=5000)
 
 
 def signal_handler(sig, frame):
+    """Handles the SIGINT signal."""
     print("SIGINT, exiting...")
     sys.exit(0)
 

@@ -29,25 +29,31 @@ This repository already have support for a couple of models out-of-box as exampl
 
 ## How to Run?
 
-1. Clone the repo:
+1. Install and start Docker. Note: thr server might use a lot of memory (it is dependent on the models loaded), you might need to ajust the memory available to your containers.
+```sh
+# To check if docker is running use:
+docker ps
+```
+
+2. Clone the repo:
 ```sh
 # The repo is ready for build after clone, no changes needed
 git clone git@github.com:statim-ai/statim-ai-server.git
 ```
 
-2. Create the docker image:
+3. Create the docker image:
 ```sh
 # This will crate new docker image: statim-ai-server
 make build
 ```
 
-3. Run the docker image:
+4. Run the docker image:
 ```sh
 # This will run the statim-ai-server docker image
 make run
 ```
 
-4. Make a request to the server:
+5. Make a request to the server:
 ```sh
 curl --request POST \
     --url http://0.0.0.0:5000/job \
@@ -58,7 +64,7 @@ curl --request POST \
     }'
 ```
 
-5. Get a server response:
+6. Get a response from the server:
 ```json
 {
 	"id": 1,
@@ -69,7 +75,7 @@ curl --request POST \
 }
 ```
 
-6. Pool the server until the request is processed:
+7. Pool the server until the request is processed:
 ```sh
 curl --request GET \
     --url http://0.0.0.0:5000/job/1
