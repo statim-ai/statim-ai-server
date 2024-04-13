@@ -26,11 +26,7 @@ def create_model(local_files_only=True) -> Any:
         The model object.
 
     """
-    model = AutoModelForCausalLM.from_pretrained(
-        "Writer/palmyra-small", local_files_only=local_files_only
-    )
-    tokenizer = AutoTokenizer.from_pretrained(
-        "Writer/palmyra-small", local_files_only=local_files_only
-    )
+    model = AutoModelForCausalLM.from_pretrained("Writer/palmyra-small", local_files_only=local_files_only)
+    tokenizer = AutoTokenizer.from_pretrained("Writer/palmyra-small", local_files_only=local_files_only)
 
     return (tokenizer, model)

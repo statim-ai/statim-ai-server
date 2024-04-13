@@ -5,8 +5,6 @@
 
 from typing import Any
 
-from transformers import T5ForConditionalGeneration, T5Tokenizer
-
 
 def create_model(local_files_only=True) -> Any:
     """
@@ -26,7 +24,4 @@ def create_model(local_files_only=True) -> Any:
         The model object.
 
     """
-    tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-small", local_files_only=local_files_only)
-    model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-small", local_files_only=local_files_only)
-
-    return (tokenizer, model)
+    return None

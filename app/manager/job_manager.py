@@ -37,16 +37,16 @@ class JobManager:
             cls._instance.handlers = {}
 
             for directory in get_directories_from_path(HANDLERS_PATH):
-                job_handler_class = getattr(
-                    import_module(HANDLER_MODULE.format(directory)), HANDLER_CLASS_NAME
-                )
+                job_handler_class = getattr(import_module(HANDLER_MODULE.format(directory)), HANDLER_CLASS_NAME)
 
                 # Create new handler instance
                 job_handler_instance = job_handler_class()
+                model_id = job_handler_instance.get_model()
 
-                cls._instance.handlers[job_handler_instance.get_model()] = (
-                    job_handler_instance
-                )
+                if model_id in cls._instance.handlers.keys():
+                    raise Exception(f"A Handler with the model_id '{model_id}' is already registered")
+
+                cls._instance.handlers[model_id] = job_handler_instance
 
         return cls._instance
 
@@ -54,47 +54,46 @@ class JobManager:
         """Start the background progress to process Jobs."""
         # Print registered Handlers
         for key in self.handlers.keys():
-            self.logger.info(f"[JobManager] start - registered handler: {key}")
+            self.logger.info(f"[JobManager.start] registered handler: {key}")
 
         def job_listener() -> None:
             while True:
-                job = self.queue.dequeue()
-                self.logger.info(f"[JobManager] job_listener - job to process: {job}")
+                try:
+                    job = self.queue.dequeue()
+                    self.logger.info(f"[JobManager.job_listener] job to process: {job}")
 
-                if job.model in self.handlers:
-                    # Get hander
-                    handler = self.handlers[job.model]
+                    if job.model in self.handlers:
+                        # Get hander
+                        handler = self.handlers[job.model]
 
-                    # Execute job
-                    result = handler.execute(job)
+                        # Execute job
+                        result = handler.execute(job)
+                        job.result_type = handler.get_result_type()
 
-                    if not isinstance(result, str):
-                        # Return type from model is not string
-                        self.logger.error(
-                            f"""[JobManager.job_listener] text Model is not returning
-                              a string: {type(result)}"""
-                        )
-                        raise Exception(
-                            f"Text Model is not returning a string: {type(result)}"
-                        )
+                        if not isinstance(result, str):
+                            # Return type from model is not string
+                            raise Exception(f"Text Model is not returning a string: {type(result)}")
 
-                    job.result = result
-                    job.result_type = handler.get_result_type()
-                else:
-                    # No model handler found for model
-                    self.logger.info(
-                        f"""[JobManager.job_listener] no Handler found
-                          for Model: {job.model}"""
-                    )
+                        job.result = result
+                    else:
+                        # No model handler found for model
+                        self.logger.info(f"""[JobManager.job_listener] no Handler found for Model: {job.model}""")
 
-                # Update database status
-                job.status = Status.PROCESSED
-                self.job_repository.update_job(job)
+                    # Set job status to processed with success
+                    job.status = Status.PROCESSED
+                except Exception as e:
+                    self.logger.error(f"""[JobManager.job_listener] Exception: {e}""")
+
+                    # Set job status to processed with error
+                    # TODO
+                finally:
+                    # Always update the Job entry
+                    self.job_repository.update_job(job)
 
         thread = Thread(target=job_listener, daemon=True)
         thread.start()
 
-        self.logger.info("[JobManager] start - Ready!")
+        self.logger.info("[JobManager.start] Ready!")
 
     def add(self, job: Job) -> None:
         """Add job to queue to be processed."""

@@ -96,10 +96,12 @@ Before using this server in a specific enviroment make sure that the use case is
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
-- Add ruff
-- Validate if multiple handlers have the same name
+
+- Add support for errors while doing inference
+
+- Convert "model" to "model_id"
 - Add glossary to README: Handler, Model, Job, etc.
-- Add suport for errors while doing inference
+
 - Updated logger format to add method to class name inside [...]
 - Add API Keys support
 - Add audit logging
@@ -142,3 +144,5 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager?
 - Save images on the database in base64
 - Create .env file
+- Add ruff
+- Validate if multiple handlers have the same name

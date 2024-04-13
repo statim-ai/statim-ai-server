@@ -74,9 +74,7 @@ class JobRepository:
         """Gets all Jobs from the database."""
         self.logger.debug("[JobRepository] get_all")
 
-        rows = self.sqlitedb.execute_select(
-            "SELECT prompt, status, model, result, result_type, id, timestamp FROM jobs"
-        )
+        rows = self.sqlitedb.execute_select("SELECT prompt, status, model, result, result_type, id, timestamp FROM jobs")
 
         return [self.map_row_to_job(row) for row in rows]
 

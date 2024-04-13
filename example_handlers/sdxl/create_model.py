@@ -26,8 +26,6 @@ def create_model(local_files_only=True) -> Any:
         The model object.
 
     """
-    pipe = AutoPipelineForText2Image.from_pretrained(
-        "stabilityai/sdxl-turbo", variant="fp16", local_files_only=local_files_only
-    )
+    pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", variant="fp16", local_files_only=local_files_only)
     pipe.to("cpu")
     return pipe
