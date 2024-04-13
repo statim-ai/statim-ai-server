@@ -1,15 +1,16 @@
 import logging
 
+
 class SimpleLogger:
     _instance = None
 
-    def __new__(cls, *args, **kwargs):        
+    def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, **kwargs)
             cls._instance._logger = logging.getLogger()
             cls._instance._logger.setLevel(logging.INFO)
-            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-            stream_handler = logging.StreamHandler()            
+            formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+            stream_handler = logging.StreamHandler()
             stream_handler.setFormatter(formatter)
             cls._instance._logger.addHandler(stream_handler)
         return cls._instance

@@ -29,19 +29,25 @@ This repository already have support for a couple of models out-of-box as exampl
 
 ## How to Run?
 
-1. Create the docker image:
+1. Clone the repo:
+```sh
+# The repo is ready for build after clone, no changes needed
+git clone git@github.com:statim-ai/statim-ai-server.git
+```
+
+2. Create the docker image:
 ```sh
 # This will crate new docker image: statim-ai-server
 make build
 ```
 
-2. Run the docker image:
+3. Run the docker image:
 ```sh
 # This will run the statim-ai-server docker image
 make run
 ```
 
-3. Make a request to the server:
+4. Make a request to the server:
 ```sh
 curl --request POST \
     --url http://0.0.0.0:5000/job \
@@ -52,7 +58,7 @@ curl --request POST \
     }'
 ```
 
-4. Get a server response:
+5. Get a server response:
 ```json
 {
 	"id": 1,
@@ -63,7 +69,7 @@ curl --request POST \
 }
 ```
 
-5. Pool the server until the request is processed:
+6. Pool the server until the request is processed:
 ```sh
 curl --request GET \
     --url http://0.0.0.0:5000/job/1
@@ -75,16 +81,18 @@ curl --request GET \
 
 ## Beware of the model licenses
 
-The LLM used by this project might have a license that doesn't allow commercial or 
-other kinds of usage.
+The LLMs used by this project might have a license that doesn't allow commercial or other kinds of usage.
 
-Before using this server in a specific enviroment make sure that the use case is allowed by the license.
+Before using this server in a specific enviroment make sure that the use case is allowed by the LLM license.
 
 ## Progress
 
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
+- Add ruff
+- Add API Keys support
+- Add audit logging
 - Add start processing date
 - Add end processing date
 - Add swagger
@@ -96,7 +104,6 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Add arch image to README
 - Add REST requests to /docs
 - Improve the model download to avoid copying extra files (this avoids extra model downloads when no other file changes are made)
-- Create .env file
 - Make uniform use of Model ID name
 - Tests
 - Add docker-compose support
@@ -108,7 +115,6 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Generate docker image with version from poetry
 
 ### DONE
-
 - Create statim-ai-server repo
 - Add .gitignore
 - Initial commit
@@ -125,3 +131,4 @@ A list of tasks yet to be implemented and the ones already implemented.
 - License file
 - Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager?
 - Save images on the database in base64
+- Create .env file

@@ -1,9 +1,12 @@
 import datetime
+
 from enum import Enum
+
 
 class SerializableEnum(Enum):
     def serialize(self):
         return self.value
+
 
 class Status(SerializableEnum):
     PROCESSING = "PROCESSING"
@@ -27,12 +30,20 @@ class ResultType(SerializableEnum):
 
 
 class Job:
-
     @staticmethod
     def from_json(json):
-        return Job(json['prompt'], Status.PROCESSING, json['model'])
-    
-    def __init__(self, prompt:str, status:str, model:str, result:str=None, result_type:str=None, id:int=None, timestamp:datetime=None):
+        return Job(json["prompt"], Status.PROCESSING, json["model"])
+
+    def __init__(
+        self,
+        prompt: str,
+        status: str,
+        model: str,
+        result: str = None,
+        result_type: str = None,
+        id: int = None,
+        timestamp: datetime = None,
+    ):
         self.prompt = prompt
         self.status = Status(status)
         self.model = model
@@ -40,23 +51,23 @@ class Job:
         self.result = result
         self.result_type = ResultType(result_type) if result_type is not None else None
         self.timestamp = timestamp or datetime.datetime.now()
-    
+
     def to_json(self):
         json = {
             "id": self.id,
             "prompt": self.prompt,
             "status": self.status.serialize(),
             "model": self.model,
-            "timestamp": self.timestamp.isoformat()
+            "timestamp": self.timestamp.isoformat(),
         }
 
-        if (self.result is not None):
+        if self.result is not None:
             json["result"] = self.result
-                    
-        if (self.result_type is not None):
+
+        if self.result_type is not None:
             json["result_type"] = self.result_type.serialize()
 
         return json
-    
+
     def __repr__(self):
         return f"Job(id={self.id}, prompt='{self.prompt}', status='{self.status}', model='{self.model}', result_type='{self.result_type}' timestamp={self.timestamp})"
