@@ -1,14 +1,17 @@
+"""Module to pre-download Models during Docker image build."""
+
 import os
+
 from importlib import import_module
 
-MODELS_PATH = f'{os.getcwd()}/download_models'
-MODEL_MODULE = '{}.create_model'
+MODELS_PATH = f"{os.getcwd()}/download_models"
+MODEL_MODULE = "{}.create_model"
 
 # Get model directories
 directories = []
 for _, subdirs, _ in os.walk(MODELS_PATH):
-    for dir in subdirs:
-        directories.append(dir)
+    for directory in subdirs:
+        directories.append(directory)
 
 
 # For each model directory
