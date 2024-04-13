@@ -97,6 +97,9 @@ A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
 - Add ruff
+- Validate if multiple handlers have the same name
+- Add glossary to README: Handler, Model, Job, etc.
+- Add suport for errors while doing inference
 - Updated logger format to add method to class name inside [...]
 - Add API Keys support
 - Add audit logging

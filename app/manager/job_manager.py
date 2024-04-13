@@ -1,3 +1,5 @@
+"""Module for the JobManager class."""
+
 import os
 
 from importlib import import_module
@@ -15,9 +17,15 @@ HANDLER_CLASS_NAME = "JobHandler"
 
 
 class JobManager:
+    """Manager class to manage Jobs requests."""
+
     _instance = None
 
     def __new__(cls, *args, **kwargs):
+        """
+        Construtor that implements the Singleton pattern and
+        dynamically loads all available handlers.
+        """
         if cls._instance is None:
             cls._instance = super().__new__(cls, *args, **kwargs)
 
@@ -43,6 +51,7 @@ class JobManager:
         return cls._instance
 
     def start(self) -> None:
+        """Start the background progress to process Jobs."""
         # Print registered Handlers
         for key in self.handlers.keys():
             self.logger.info(f"[JobManager] start - registered handler: {key}")
@@ -88,8 +97,9 @@ class JobManager:
         self.logger.info("[JobManager] start - Ready!")
 
     def add(self, job: Job) -> None:
-        # Add job to queue
+        """Add job to queue to be processed."""
         self.queue.enqueue(job)
 
     def get_handlers(self):
+        """Returns a list of available handlers."""
         return self.handlers.values()

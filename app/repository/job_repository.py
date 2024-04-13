@@ -34,7 +34,7 @@ class JobRepository:
         """Creates a new database entry for the given Job."""
         self.logger.debug("[JobRepository] create_job")
 
-        job.id = self.sqlitedb.execute_insert(
+        job.job_id = self.sqlitedb.execute_insert(
             "INSERT INTO jobs (prompt, status, model, timestamp) VALUES (?, ?, ?, ?)",
             (job.prompt, job.status.serialize(), job.model, job.timestamp),
         )
@@ -44,9 +44,14 @@ class JobRepository:
         """Updates a Job on the database."""
         self.logger.debug("[JobRepository] update_job")
 
-        job.id = self.sqlitedb.execute_update(
+        job.job_id = self.sqlitedb.execute_update(
             "UPDATE jobs SET status = ?, result = ?, result_type = ? WHERE id = ?",
-            (job.status.serialize(), job.result, job.result_type.serialize(), job.id),
+            (
+                job.status.serialize(),
+                job.result,
+                job.result_type.serialize(),
+                job.job_id,
+            ),
         )
         return job
 
