@@ -97,6 +97,7 @@ A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
 - Add ruff
+- Updated logger format to add method to class name inside [...]
 - Add API Keys support
 - Add audit logging
 - Add start processing date

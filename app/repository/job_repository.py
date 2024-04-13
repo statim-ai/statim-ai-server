@@ -1,17 +1,19 @@
+"""Module with the repository class for Jobs."""
+
 import os
 
 from model.job import Job
 from utils.simple_logger import SimpleLogger
 from utils.sqlitedb import SQLiteDB
 
-for key, value in os.environ.items():
-    print(f"{key}: {value}")
-
 JOBS_DB_FILE = os.environ["SQLITE_FILE_JOBS"]
 
 
 class JobRepository:
+    """Repository pattern class to abstract the persistance an retrieve of Jobs."""
+
     def __init__(self) -> None:
+        """Initialzes the database."""
         self.logger = SimpleLogger()
         self.sqlitedb = SQLiteDB(JOBS_DB_FILE)
         self.__create_table()
@@ -29,6 +31,7 @@ class JobRepository:
                                     timestamp TIMESTAMP)""")
 
     def create_job(self, job: Job):
+        """Creates a new database entry for the given Job."""
         self.logger.debug("[JobRepository] create_job")
 
         job.id = self.sqlitedb.execute_insert(
@@ -38,6 +41,7 @@ class JobRepository:
         return job
 
     def update_job(self, job: Job):
+        """Updates a Job on the database."""
         self.logger.debug("[JobRepository] update_job")
 
         job.id = self.sqlitedb.execute_update(
@@ -46,12 +50,14 @@ class JobRepository:
         )
         return job
 
-    def get_by_id(self, id: int):
+    def get_by_id(self, job_id: int):
+        """Gets a Job by ID from the database."""
         self.logger.debug("[JobRepository] get_by_id")
 
         rows = self.sqlitedb.execute_select(
-            "SELECT prompt, status, model, result, result_type, id, timestamp FROM jobs WHERE id=?",
-            (id,),
+            """SELECT prompt, status, model, result, result_type, id, timestamp
+              FROM jobs WHERE id=?""",
+            (job_id,),
         )
 
         if len(rows) == 1:
@@ -60,6 +66,7 @@ class JobRepository:
             return None
 
     def get_all(self):
+        """Gets all Jobs from the database."""
         self.logger.debug("[JobRepository] get_all")
 
         rows = self.sqlitedb.execute_select(
@@ -70,12 +77,13 @@ class JobRepository:
 
     @staticmethod
     def map_row_to_job(row):
+        """Convert database row in a Job object."""
         return Job(
             prompt=row["prompt"],
             status=row["status"],
             model=row["model"],
             result=row["result"],
             result_type=row["result_type"],
-            id=row["id"],
+            job_id=row["id"],
             timestamp=row["timestamp"],
         )

@@ -29,12 +29,13 @@ class JobManager:
             cls._instance.handlers = {}
 
             for directory in get_directories_from_path(HANDLERS_PATH):
-                JobHandler = getattr(
+                job_handler_class = getattr(
                     import_module(HANDLER_MODULE.format(directory)), HANDLER_CLASS_NAME
                 )
 
                 # Create new handler instance
-                job_handler_instance = JobHandler()
+                job_handler_instance = job_handler_class()
+
                 cls._instance.handlers[job_handler_instance.get_model()] = (
                     job_handler_instance
                 )
@@ -58,10 +59,11 @@ class JobManager:
                     # Execute job
                     result = handler.execute(job)
 
-                    if type(result) != str:
+                    if not isinstance(result, str):
                         # Return type from model is not string
                         self.logger.error(
-                            f"[JobManager] job_listener - text Model is not returning a string: {type(result)}"
+                            f"""[JobManager.job_listener] text Model is not returning
+                              a string: {type(result)}"""
                         )
                         raise Exception(
                             f"Text Model is not returning a string: {type(result)}"
@@ -72,7 +74,8 @@ class JobManager:
                 else:
                     # No model handler found for model
                     self.logger.info(
-                        f"[JobManager] job_listener - no Handler found for Model: {job.model}"
+                        f"""[JobManager.job_listener] no Handler found
+                          for Model: {job.model}"""
                     )
 
                 # Update database status
