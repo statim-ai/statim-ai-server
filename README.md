@@ -31,7 +31,7 @@ This repository already have support for a couple of models out-of-box as exampl
 
 1. Clone the repo:
 ```sh
-# The repo is ready for build after clone, no changes needed
+# The repo is ready for build after clone, except creating a `.env` file (step 2)
 git clone git@github.com:statim-ai/statim-ai-server.git
 ```
 
