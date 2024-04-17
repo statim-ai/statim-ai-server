@@ -102,12 +102,10 @@ Before using this server in a specific enviroment make sure that the use case is
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
-
 - Add support for errors while doing inference
-
 - Convert "model" to "model_id"
 - Add glossary to README: Handler, Model, Job, etc.
-
+- Add status message to job
 - Updated logger format to add method to class name inside [...]
 - Add API Keys support
 - Add audit logging
@@ -152,3 +150,4 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Create .env file
 - Add ruff
 - Validate if multiple handlers have the same name
+- Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager? Moved this code to JobManager

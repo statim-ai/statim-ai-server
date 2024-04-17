@@ -17,7 +17,8 @@ class Status(SerializableEnum):
     """Enum with the status of Job requests."""
 
     PROCESSING = "PROCESSING"
-    PROCESSED = "PROCESSED"
+    PROCESSED_OK = "PROCESSED_OK"
+    PROCESSED_ERROR = "PROCESSED_ERROR"
 
 
 class ResultType(SerializableEnum):

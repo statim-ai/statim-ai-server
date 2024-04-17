@@ -1,6 +1,7 @@
 """Module with the abstract class to handle inference requests."""
 
 from abc import ABC, abstractmethod
+from typing import Any
 
 from utils.simple_logger import SimpleLogger
 
@@ -25,7 +26,7 @@ class BaseJobHandler(ABC):
         return self.result_type
 
     @abstractmethod
-    def execute(self) -> str:
+    def execute(self) -> Any:
         """
         Run the inference step and convertion to string.
         It is this Class responsiblity to return a string object

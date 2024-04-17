@@ -49,7 +49,7 @@ class JobRepository:
             (
                 job.status.serialize(),
                 job.result,
-                job.result_type.serialize(),
+                job.result_type.serialize() if job.result_type is not None else None,
                 job.job_id,
             ),
         )

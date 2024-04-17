@@ -1,11 +1,14 @@
 """Module for the JobManager class."""
 
+import base64
+import io
 import os
 
 from importlib import import_module
 from threading import Thread
 
-from model.job import Job, Status
+from PIL import Image
+from model.job import Job, ResultType, Status
 from repository.job_repository import JobRepository
 from utils.simple_logger import SimpleLogger
 from utils.simple_queue import SimpleQueue
@@ -68,24 +71,44 @@ class JobManager:
 
                         # Execute job
                         result = handler.execute(job)
-                        job.result_type = handler.get_result_type()
+                        result_type = handler.get_result_type()
 
-                        if not isinstance(result, str):
-                            # Return type from model is not string
-                            raise Exception(f"Text Model is not returning a string: {type(result)}")
+                        # Convert result to specific object
+                        if result_type == ResultType.TEXT:
+                            # Handle str results
+                            if isinstance(result, str):
+                                job.result = result
+                                job.result_type = ResultType.TEXT
+                                job.status = Status.PROCESSED_OK
+                            else:
+                                raise Exception(f"Text Model is not returning a string: {type(result)}")
 
-                        job.result = result
+                        elif result_type == ResultType.IMAGE:
+                            # Handle PIL Image objects
+                            if isinstance(result, Image.Image):
+                                buffer = io.BytesIO()
+                                result.save(buffer, format="PNG")
+                                base64str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+                                job.result = f"data:image/png;base64,{base64str}"
+                                job.result_type = ResultType.IMAGE
+                                job.status = Status.PROCESSED_OK
+                            else:
+                                raise Exception(f"Image Model is not returning an Image: {type(result)}")
+
+                        else:
+                            # Model is not registered with a know type
+                            raise Exception(f"Model is not registered with a know type: {result_type}")
                     else:
                         # No model handler found for model
-                        self.logger.info(f"""[JobManager.job_listener] no Handler found for Model: {job.model}""")
+                        raise Exception(f"No Handler found for Model: {job.model}")
 
-                    # Set job status to processed with success
-                    job.status = Status.PROCESSED
                 except Exception as e:
-                    self.logger.error(f"""[JobManager.job_listener] Exception: {e}""")
+                    self.logger.error(f"[JobManager.job_listener] Exception processing request: {str(e)}")
 
                     # Set job status to processed with error
-                    # TODO
+                    job.status = Status.PROCESSED_ERROR
+                    job.result_type = None
                 finally:
                     # Always update the Job entry
                     self.job_repository.update_job(job)

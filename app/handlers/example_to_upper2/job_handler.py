@@ -3,6 +3,7 @@
 # ⚠️⚠️⚠️ WARNING ⚠️⚠️⚠️
 # This is a example file
 
+from PIL import Image
 from model.base_job_handler import BaseJobHandler, ResultType
 from model.job import Job
 
@@ -27,7 +28,7 @@ class JobHandler(BaseJobHandler):
 
     def get_result_type(self) -> ResultType:
         """Returns the type of resource that this Handler produces."""
-        return ResultType.TEXT
+        return ResultType.IMAGE
 
     def execute(self, job: Job) -> str:
         """
@@ -37,5 +38,4 @@ class JobHandler(BaseJobHandler):
         """
         self.logger.info(f"[{MODEL_ID}] execute")
 
-        # return job.prompt.upper()
-        return 1
+        return Image.new("RGB", (300, 300))
