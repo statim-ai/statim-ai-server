@@ -123,7 +123,6 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Make uniform use of Model ID name
 - Tests
 - Add docker-compose support
-- Version file
 - Init vs start syntaxt
 - Add multi-stage support to Dockerfile?
 - Disable outgoing connections on the container
@@ -151,3 +150,5 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Add ruff
 - Validate if multiple handlers have the same name
 - Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager? Moved this code to JobManager
+- Get version from pyproject file to build the docker image
+- First published image on Docker Hub
