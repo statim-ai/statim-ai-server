@@ -1,5 +1,6 @@
 """Module that start the server."""
 
+import os
 import signal
 import sys
 
@@ -7,6 +8,8 @@ from controllers import job_controller, model_controller
 from flask import Flask
 from manager.job_manager import JobManager
 from waitress import serve
+
+PORT = os.environ["PORT"]
 
 swagger_config = {
     "headers": [],
@@ -64,7 +67,7 @@ def main():
     # swagger = Swagger(app, config=swagger_config, template=swagger_template)
 
     # Init waitress server
-    serve(app, host="0.0.0.0", port=5000)
+    serve(app, host="0.0.0.0", port=PORT)
 
 
 def signal_handler(sig, frame):

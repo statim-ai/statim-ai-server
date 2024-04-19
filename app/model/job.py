@@ -57,7 +57,7 @@ class Job:
     def to_json(self):
         """Converts current object to a Json string."""
         json = {
-            "job_id": self.job_id,
+            "id": self.job_id,
             "prompt": self.prompt,
             "status": self.status.serialize(),
             "model": self.model,
@@ -74,7 +74,7 @@ class Job:
 
     def __repr__(self):
         return f"""Job(
-            job_id={self.job_id}
+            id={self.job_id}
             , prompt='{self.prompt}'
             , status='{self.status}'
             , model='{self.model}'

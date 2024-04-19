@@ -7,6 +7,12 @@ REPO := statimai
 build: clean_ruff
 	docker build -t ${IMAGE} .
 
+prepare_test:
+	poetry install --no-root --only=test
+
+test:
+	poetry run python tests/test_models.py
+
 run:
 	docker run --env-file .env --rm -p 5000:5000 ${IMAGE}
 

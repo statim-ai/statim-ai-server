@@ -2,9 +2,9 @@
 
 ## What is statim-ai-server?
 
-Nowdays it is easy to run AI models (for inference) locally or on the cloud without much effort.
+Nowdays it is easy to run a number of AI models locally or on the cloud (at least for inference). But the experience is not always the best because the models don't provide features that make them easy to use.
 
-`statim-ai-server` wants to provide a out-of-box experience running those models locally or on infrastructure without being tied to specific providers and providing quality-of-life features.
+`statim-ai-server` wants to provide a great out-of-box experience running AI models locally or on the cloud providing features that make using those models in a production environment easier, without being tied to specific providers.
 
 ## What does it provides?
 
@@ -102,32 +102,32 @@ Before using this server in a specific enviroment make sure that the use case is
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
-- Add support for errors while doing inference
 - Convert "model" to "model_id"
+- Make uniform use of Model ID name
+
+- Add support for errors while doing inference
+
 - Add glossary to README: Handler, Model, Job, etc.
-- Add status message to job
-- Updated logger format to add method to class name inside [...]
-- Add API Keys support
-- Add audit logging
+- Add REST requests to /docs
+- Add swagger
+- Add input validation
+- Test saving sqlite file locally to keep state
+
 - Add start processing date
 - Add end processing date
-- Add swagger
+- Add API Keys support
+- Add audit logging to database
 - Add API to access images directly?
 - Send images on job endpoint?
 - Add limit and offset to job entpoint
-- Save sqlite file locally to keep state
-- Add input validation
 - Add arch image to README
-- Add REST requests to /docs
 - Improve the model download to avoid copying extra files (this avoids extra model downloads when no other file changes are made)
-- Make uniform use of Model ID name
-- Tests
 - Add docker-compose support
 - Init vs start syntaxt
 - Add multi-stage support to Dockerfile?
 - Disable outgoing connections on the container
-- Use docker squash?
-- Generate docker image with version from poetry
+- Add status message to job
+- Updated logger format to add method to class name inside [...]
 
 ### DONE
 - Create statim-ai-server repo
@@ -152,3 +152,4 @@ A list of tasks yet to be implemented and the ones already implemented.
 - Which part of the code should be responsbile for serializing the model output? Generic on the Job Manager? Moved this code to JobManager
 - Get version from pyproject file to build the docker image
 - First published image on Docker Hub
+- Add tests
