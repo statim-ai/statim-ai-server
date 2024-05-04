@@ -14,13 +14,8 @@ RUN pip install --upgrade pip
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root --only main
 
-# Install model dependencies
-RUN poetry install --no-root --only models
-
-# Download models
+# Copy script to download models
 COPY --chown=statim:statim app/download_models.py ./download_models/download_models.py
-COPY --chown=statim:statim app/handlers/ ./download_models/
-RUN poetry run python download_models/download_models.py
 
 # Copy app
 COPY --chown=statim:statim . .

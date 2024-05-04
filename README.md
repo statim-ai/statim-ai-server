@@ -102,6 +102,7 @@ Before using this server in a specific enviroment make sure that the use case is
 A list of tasks yet to be implemented and the ones already implemented.
 
 ### TODO
+- Add error message if no model is loaded and stop server
 - Convert "model" to "model_id"
 - Make uniform use of Model ID name
 

@@ -30,10 +30,10 @@ class JobHandler(BaseJobHandler):
         """Returns the type of resource that this Handler produces."""
         return ResultType.IMAGE
 
-    def execute(self, job: Job) -> str:
+    def execute(self, job: Job) -> Image:
         """
-        Run the inference step and convertion to string.
-        It is this Class responsiblity to return a string object
+        Run the inference step and returns an Image.
+        It is this Class responsiblity to return a Image object
         that will be saved on the database.
         """
         self.logger.info(f"[{MODEL_ID}] execute")
