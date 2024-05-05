@@ -12,10 +12,10 @@ from testcontainers.core.waiting_utils import wait_for_logs
 
 class ModelsTest(TestCase):
     """Models test class."""
-    
+
     def test_status_codes_200(self):
         """Test for status code 200."""
-        with DockerContainer("statim-ai-server:0.1.0").with_exposed_ports(5000).with_env("SQLITE_FILE_JOBS", "jobs.db").with_env("PORT", "5000") as container:
+        with DockerContainer("statim-ai-server:0.1.0").with_exposed_ports(5000).with_env("PORT", "5000") as container:
             wait_for_logs(container, "Serving on")
 
             port = container.get_exposed_port(5000)

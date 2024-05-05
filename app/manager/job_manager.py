@@ -51,19 +51,25 @@ class JobManager:
 
                 cls._instance.handlers[model_id] = job_handler_instance
 
+            # Check if no Handlers are registered
+            if len(cls._instance.handlers) == 0:
+                cls._instance.logger.error(
+                    "[JobManager.start] Zero handlers registered, to learn how to add one visit: https://github.com/statim-ai/statim-ai-server-example-text-model"
+                )
+
         return cls._instance
 
     def start(self) -> None:
         """Start the background progress to process Jobs."""
         # Print registered Handlers
         for key in self.handlers.keys():
-            self.logger.info(f"[JobManager.start] registered handler: {key}")
+            self.logger.info(f"[JobManager.start] Registered handler: {key}")
 
         def job_listener() -> None:
             while True:
                 try:
                     job = self.queue.dequeue()
-                    self.logger.info(f"[JobManager.job_listener] job to process: {job}")
+                    self.logger.info(f"[JobManager.job_listener] Job to process: {job}")
 
                     if job.model in self.handlers:
                         # Get hander

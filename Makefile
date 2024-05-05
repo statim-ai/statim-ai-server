@@ -1,7 +1,8 @@
 #!/bin/bash
 
 VERSION := `grep -m 1 version pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3`
-IMAGE := statim-ai-server:${VERSION}
+NAME := `grep -m 1 name pyproject.toml | tr -s ' ' | tr -d '"' | tr -d "'" | cut -d' ' -f3`
+IMAGE := ${NAME}:${VERSION}
 REPO := statimai
 
 build: clean_ruff

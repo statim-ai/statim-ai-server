@@ -1,12 +1,10 @@
 """Module with the repository class for Jobs."""
 
-import os
-
 from model.job import Job
 from utils.simple_logger import SimpleLogger
 from utils.sqlitedb import SQLiteDB
 
-JOBS_DB_FILE = os.environ["SQLITE_FILE_JOBS"]
+JOBS_DB_FILE = "jobs.db"
 
 
 class JobRepository:
